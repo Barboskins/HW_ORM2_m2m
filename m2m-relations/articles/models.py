@@ -16,8 +16,8 @@ class Article(models.Model):
         return self.title
 
 class Tag(models.Model):
-    title = models.CharField(max_length=10, verbose_name='Название тега')
-    article = models.ManyToManyField(Article, through='ArtickeTag', verbose_name='Название статьи', related_name='tag')
+    title = models.CharField(max_length=256, verbose_name='Название тега')
+    article = models.ManyToManyField(Article, through='ArtickeTag', verbose_name='Название статьи')
 
     class Meta:
         verbose_name = 'Тэг'
@@ -27,9 +27,9 @@ class Tag(models.Model):
         return self.title
 
 class ArtickeTag(models.Model):
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='Тег')
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Статья')
-    is_main = models.BooleanField(default=False)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='Тэг')
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Статья',related_name='scopes')
+    is_main = models.BooleanField(verbose_name='Основной', default=False)
 
     def __str__(self):
         return f'{self.article}-{self.tag}'
